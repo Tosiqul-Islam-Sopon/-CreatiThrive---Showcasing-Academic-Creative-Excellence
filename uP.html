@@ -9,10 +9,15 @@
     <style>
         body {
             padding-top: 60px; /* Adjust this value to match the height of your fixed navbar */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            margin: 0;
         }
 
         .navbar {
-            margin-left: 80px;
+            margin-left: 150px;
             padding: 8px 8px 8px 15px;  
             background-color: #4CAF50;
             color: white;
@@ -23,9 +28,12 @@
         }
 
         .context {
-            margin-top: 30px; /* Adjust this value to create space below the navbar */
-            margin-left: 150px;
-            padding: 5px; /* Add some padding for better appearance */
+            padding: 80px;
+            max-width: 800px; /* Adjust the maximum width as needed */
+            width: 100%;
+            background-color: #f8f9fa; /* Adjust background color */
+            border-radius: 10px; /* Add border-radius for rounded corners */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add box shadow for depth */
         }
     </style>
 </head>
@@ -34,27 +42,29 @@
     <div class="navbar">
         <h3 class="text-white">CreatiThrive - Showcasing Academic & Creative Excellence</h3>
     </div>
-    <div class="context">
-        <h2>Upload Your Project</h2>
-
-        <form action="#" method="POST" enctype="multipart/form-data">
-            <div class="mb-3">
-                <label for="projectHeader" class="form-label">Project Header</label>
-                <input type="text" class="form-control" id="projectHeader" name="projectHeader" required>
-            </div>
-
-            <div class="mb-3">
-                <label for="projectDescription" class="form-label">Project Description</label>
-                <textarea class="form-control" id="projectDescription" name="projectDescription" rows="4" required></textarea>
-            </div>
-
-            <div class="mb-3">
-                <label for="projectPhoto" class="form-label">Project Photo</label>
-                <input type="file" class="form-control" id="projectPhoto" name="projectPhoto" accept="image/*" required>
-            </div>
-
-            <button type="submit" class="btn btn-primary">Upload Project</button>
-        </form>
+    <div class="card mt-3">
+        <div class="context">
+            <h2>Upload Your Project</h2>
+    
+            <form action="#" method="POST" enctype="multipart/form-data">
+                <div class="mb-3">
+                    <label for="projectHeader" class="form-label">Project Header</label>
+                    <input type="text" class="form-control" id="projectHeader" name="projectHeader" required>
+                </div>
+    
+                <div class="mb-3">
+                    <label for="projectDescription" class="form-label">Project Description</label>
+                    <textarea class="form-control" id="projectDescription" name="projectDescription" rows="4" required></textarea>
+                </div>
+    
+                <div class="mb-3">
+                    <label for="projectPhoto" class="form-label">Project Photo</label>
+                    <input type="file" class="form-control" id="projectPhoto" name="projectPhoto" accept="image/*" required>
+                </div>
+    
+                <button type="submit" class="btn btn-primary">Upload Project</button>
+            </form>
+        </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
