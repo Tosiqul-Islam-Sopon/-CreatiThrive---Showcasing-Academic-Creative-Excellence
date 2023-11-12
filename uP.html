@@ -6,10 +6,35 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Project Upload</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            padding-top: 60px; /* Adjust this value to match the height of your fixed navbar */
+        }
+
+        .navbar {
+            margin-left: 80px;
+            padding: 8px 8px 8px 70px;  
+            background-color: #4CAF50;
+            color: white;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            top: 0;
+        }
+
+        .context {
+            margin-top: 30px; /* Adjust this value to create space below the navbar */
+            margin-left: 150px;
+            padding: 5px; /* Add some padding for better appearance */
+        }
+    </style>
 </head>
 
 <body>
-    <div class="container mt-4">
+    <div class="navbar">
+        <h3 class="text-white">CreatiThrive - Showcasing Academic & Creative Excellence</h3>
+    </div>
+    <div class="context">
         <h2>Upload Your Project</h2>
 
         <form action="#" method="POST" enctype="multipart/form-data">
