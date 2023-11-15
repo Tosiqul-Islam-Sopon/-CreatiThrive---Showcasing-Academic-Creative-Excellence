@@ -1,4 +1,5 @@
-<?php 
+<?php
+    session_start();
     include('aboutUs.html');
-    include('sideBar.html');
+    include('sideBar.php');
 ?>

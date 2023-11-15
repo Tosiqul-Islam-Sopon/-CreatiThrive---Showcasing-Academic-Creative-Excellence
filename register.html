@@ -1,13 +1,12 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>Register</title>
-    <!-- Add Bootstrap CSS link here -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
     <style>
         .navbar {
             margin-left: 80px;
-            padding: 8px 8px 8px 70px;  
+            padding: 8px 8px 8px 70px;
             background-color: #4CAF50;
             color: white;
             position: fixed;
@@ -25,7 +24,7 @@
         <div class="row">
             <div class="col-md-6 offset-md-3">
                 <h2>Register</h2>
-                <form method="POST" action="./register.php">
+                <form method="POST" action="register.php">
                     <div class="form-group">
                         <label for="name">Name</label>
                         <input name="name" type="text" class="form-control" id="name" placeholder="Enter your name" required>
@@ -35,21 +34,20 @@
                         <input name="email" type="email" class="form-control" id="email" placeholder="Enter your email" required>
                     </div>
                     <div class="form-group">
-                        <label for="id">Student ID</label>
-                        <input name="student_id" type="text" class="form-control" id="department" placeholder="Enter your student ID" required>
+                        <label for="student_id">Student ID</label>
+                        <input name="student_id" type="text" class="form-control" id="student_id" placeholder="Enter your student ID" required>
                     </div>
                     <div class="form-group">
                         <label for="password">Password</label>
                         <input name="password" type="password" class="form-control" id="password" placeholder="Enter your password" required>
                     </div>
-                    <a href="./login.php"><button type="submit"  name="submit" class="btn btn-primary">Register</button>
-                    </a>
+                    <a href="./login.php"><button type="submit" name="submit" class="btn btn-primary">Register</button></a>
+                    
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Add Bootstrap JS and jQuery links here (optional) -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
