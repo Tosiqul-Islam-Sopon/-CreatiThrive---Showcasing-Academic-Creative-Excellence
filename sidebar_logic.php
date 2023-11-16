@@ -23,6 +23,13 @@
       <span class="tooltip">Add Project</span>
     </li>
     <li>
+      <a href="profile.php">
+        <i class="bx bx-user"></i>  
+        <span class="link_name">Profile</span>
+      </a>
+      <span class="tooltip">Profile</span></span>
+    </li>
+    <li>
       <a href="logout.php">
         <i class="bx bx-log-out"></i>
         <span class="link_name">LogOut</span>
