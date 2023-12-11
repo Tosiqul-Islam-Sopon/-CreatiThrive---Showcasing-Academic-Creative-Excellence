@@ -72,12 +72,12 @@
             color: #fff;
         }
         .navbar {
-            margin-left: 148px;
-            padding: 8px 8px 8px 15px;
+            margin-left: 80px;
+            padding: 8px 8px 8px 70px;  
             background-color: #4CAF50;
             color: white;
             position: fixed;
-            width: 100%;
+            /* width: 100%; */
             z-index: 1000;
             top: 0;
         }
