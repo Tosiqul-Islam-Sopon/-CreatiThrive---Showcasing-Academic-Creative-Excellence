@@ -3,16 +3,19 @@ body {
     color: #333;
     font-family: 'Roboto', sans-serif;
     margin: 0;
+    overflow-x: hidden;
+}
+
+.container {
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
     min-height: 100vh;
-    overflow-x: hidden;
 }
 
 .navbar {
     margin-left: 80px;
-    padding: 8px 8px 8px 70px;
+    padding: 8px 8px 8px 8px;
     background-color: #4CAF50;
     color: white;
     position: fixed;
@@ -22,8 +25,12 @@ body {
 }
 
 .context {
-    margin-left: 150px;
-    margin-top: 30px;
+    padding: 100px;
+    max-width: 800px;
+    width: 100%;
+    background-color: #f8f9fa;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
 .profile-container {
@@ -35,96 +42,114 @@ body {
     max-width: 800px;
     text-align: center;
     position: relative;
-    margin-top: 80px; /* Adjust margin-top to create more space below the navbar */
 }
 
-.profile-image {
-    width: 150px;
-    /* Set a specific width for the profile image */
-    height: 150px;
-    /* Set a specific height for the profile image */
-    object-fit: cover;
-    /* Maintain aspect ratio and cover the entire container */
-    border: 5px solid #fff;
-    border-radius: 50%;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
-    cursor: pointer;
-}
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border: 5px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
 
-.edit-btn {
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    display: none;
-}
+        .edit-btn {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
 
-.edit-form {
-    display: none;
-    margin-top: 20px;
-}
+        .profile-info {
+            margin-top: 20px;
+        }
 
-.form-group {
-    margin-bottom: 20px;
-}
+        .form-group {
+            margin-bottom: 20px;
+        }
 
-.form-group label {
-    display: block;
-    font-weight: bold;
-    margin-bottom: 5px;
-    color: #555;
-}
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
 
-.form-group input {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    box-sizing: border-box;
-}
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
 
-.save-btn,
-.cancel-btn {
-    background-color: #3498db;
-    color: #fff;
-    border: none;
-    padding: 8px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-right: 10px;
-}
+        .form-group input[type="file"] {
+            margin-bottom: 0;
+        }
 
-.cancel-btn {
-    background-color: #ccc;
-}
+        .save-btn,
+        .cancel-btn {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-right: 10px;
+        }
 
-/* Additional styles for image upload */
+        .cancel-btn {
+            background-color: #ccc;
+        }
 
-.image-upload-label {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
-    cursor: pointer;
-}
+        .featured-works {
+            margin-top: 30px;
+        }
 
-.image-upload-label img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 50%;
-}
+        .featured-works h3 {
+            margin-bottom: 10px;
+        }
 
-#imageUpload {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    opacity: 0;
-    cursor: pointer;
-}
+        .featured-work-item {
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            padding: 10px;
+            margin-bottom: 10px;
+            position: relative;
+        }
+
+        .delete-btn,
+        .edit-work-btn {
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+            margin-right: 5px;
+        }
+
+        .add-work-btn {
+            background-color: #27ae60;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .edit-profile-page .featured-works {
+            display: none;
+        }
+        .edit-profile-page .edit-btn{
+            display: none;
+        }
+        .edit-profile-page .profile-image{
+            display: none;
+        }

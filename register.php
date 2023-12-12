@@ -1,14 +1,11 @@
 <?php
-// Database connection details
 $servername = "localhost";
 $username = "root";
 $password = "";
 $dbname = "creatithrive";
 
-// Create connection
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Check connection
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
@@ -20,16 +17,34 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $student_id = $_POST['student_id'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password
 
-    // SQL query to insert data into the database
-    $sql = "INSERT INTO `user`(`name`, `email`, `password`, `student_id`) VALUES ('$name', '$email', '$password', '$student_id')";
+    // Optional profile fields
+    $address = isset($_POST['address']) ? $_POST['address'] : "";
+    $skills = isset($_POST['skills']) ? $_POST['skills'] : "";
 
-    if ($conn->query($sql) === TRUE) {
+    // Default profile image
+    $profileImage = null; // Initialize to null
+
+    // Check if a file was uploaded
+    if ($_FILES['profile_pic']['error'] === UPLOAD_ERR_OK) {
+        $profileImage = file_get_contents($_FILES['profile_pic']['tmp_name']);
+    }
+
+    // Now, insert the user data into the database
+    $sql = "INSERT INTO `user`(`name`, `email`, `password`, `student_id`, `address`, `skills`, `profile_pic`)
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ssssssb", $name, $email, $password, $student_id, $address, $skills, $profileImage);
+
+    if ($stmt->execute()) {
         echo "Registration successful!";
         header("Location: login.php");
         exit();
     } else {
         echo "Error: " . $sql . "<br>" . $conn->error;
     }
+
+    $stmt->close();
 }
 
 // Close the database connection
