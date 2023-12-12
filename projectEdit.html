@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow-x: hidden;
+            padding-top: 60px;
+        }
+
+        .navbar {
+            margin-left: 148px;
+            padding: 15px;
+            background-color: #4CAF50;
+            color: white;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            top: 0;
+        }
+
+        .navbar h3 {
+            margin: 0;
+        }
+
+        .edit-form {
+            margin-top: 20px;
+            text-align: center;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            max-width: 600px;
+            width: 90%;
+            margin-bottom: 20px;
+        }
+
+        .edit-form label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+            text-align: left;
+        }
+
+        .edit-form input,
+        .edit-form textarea,
+        .edit-form button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        #projectImagePreview {
+            max-width: 100%;
+            height: auto;
+            margin-bottom: 20px;
+            border-radius: 5px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .edit-form button {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .edit-form button.cancel-btn {
+            background-color: #ccc;
+            margin-left: 10px;
+        }
+    </style>
+    <title>Project Edit Page</title>
+</head>
+
+<body>
+    <div class="navbar">
+        <h3 class="text-white">CreatiThrive - Showcasing Academic & Creative Excellence</h3>
+    </div>
+    <!-- Project Edit Form -->
+    <form class="edit-form">
+        <label for="editProjectHeader">Edit Project Header:</label>
+        <input type="text" id="editProjectHeader">
+        <label for="editProjectDescription">Edit Project Description:</label>
+        <textarea id="editProjectDescription"></textarea>
+        <label for="editProjectUrl">Edit Project URL:</label>
+        <input type="text" id="editProjectUrl">
+
+        <!-- Image Upload -->
+        <label for="editProjectImage">Edit Project Image:</label>
+        <input type="file" id="editProjectImage" accept="image/*">
+        <img id="projectImagePreview" alt="Project Image Preview">
+
+        <button type="button" onclick="saveProjectEdit()">Save Changes</button>
+        <button type="button" onclick="cancelProjectEdit()" class="cancel-btn">Cancel</button>
+    </form>
+
+    <!-- Bootstrap JS and Popper.js (required for Bootstrap components) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        // Function to preview the selected image
+        function previewImage() {
+            const input = document.getElementById('editProjectImage');
+            const preview = document.getElementById('projectImagePreview');
+            
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    preview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        // Attach the previewImage function to the change event of the file input
+        document.getElementById('editProjectImage').addEventListener('change', previewImage);
+
+        function saveProjectEdit() {
+            // Add logic to save project edits
+            // ...
+
+            // Redirect back to the original page
+            window.location.href = 'original_page.php';
+        }
+
+        function cancelProjectEdit() {
+            // Redirect back to the original page without saving changes
+            window.location.href = 'original_page.php';
+        }
+    </script>
+</body>
+
+</html>
