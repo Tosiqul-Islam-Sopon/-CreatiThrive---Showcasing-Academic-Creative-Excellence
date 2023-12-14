@@ -36,6 +36,10 @@ if (isset($_SESSION['user_id'])) {
     // Check if any projects are uploaded for the user
     $sqlProjects = "SELECT * FROM projects WHERE student_id = $userId";
     $resultProjects = $conn->query($sqlProjects);
+    $projectsArray = array();
+    while ($rowProject = $resultProjects->fetch_assoc()) {
+        $projectsArray[] = $rowProject;
+    }
 
 } else {
     // Redirect or handle the case where the user is not logged in
@@ -51,11 +55,201 @@ if (isset($_SESSION['user_id'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" type="text/css" href="profile2.css">
+    <!-- <link rel="stylesheet" type="text/css" href="profile2.css"> -->
     <style>
         
         /* Add your CSS styles here, or you can link to an external stylesheet */
         /* Ensure the styles match the design of your previous code */
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            margin-left: 80px;
+            padding: 8px 8px 8px 8px;
+            background-color: #4CAF50;
+            color: white;
+            position: fixed;
+            width: 100%;
+            z-index: 1000;
+            top: 0;
+        }
+
+        .context {
+            padding: 100px;
+            max-width: 800px;
+            width: 100%;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .profile-container {
+            background-color: #fff;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 100%;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+            position: relative;
+        }
+
+        .profile-image {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border: 5px solid #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .edit-btn {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            position: absolute;
+            top: 10px;
+            right: 10px;
+        }
+
+        .profile-info {
+            margin-top: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 10px;
+        }
+
+        .form-group input[type="file"] {
+            margin-bottom: 0;
+        }
+
+        .save-btn,
+        .cancel-btn {
+            background-color: #3498db;
+            color: #fff;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .cancel-btn {
+            background-color: #ccc;
+            margin-left: 10px;
+        }
+
+        .featured-works {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            width: 80%;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            position: relative;
+        }
+
+        .featured-works h3 {
+            margin-bottom: 10px;
+        }
+
+        .featured-works-table {
+            width: 100%;
+            /* Adjust this value for spacing */
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        .featured-works-table th,
+        .featured-works-table td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .featured-works-table th {
+            background-color: #3498db;
+            color: #fff;
+        }
+
+        .work-buttons {
+            display: flex;
+            gap: 5px;
+        }
+
+
+        .delete-btn,
+        .edit-work-btn,
+        .details-btn,
+        .add-work-btn {
+            background-color: #e74c3c;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        .add-work-btn {
+            background-color: #27ae60;
+            margin-left: auto;
+            display: block;
+        }
+
+        .edit-profile-page .featured-works {
+            display: none;
+        }
+
+        .edit-profile-page .edit-btn {
+            display: none;
+        }
+
+        .edit-profile-page .profile-image {
+            display: none;
+        }
+
+        .edit-profile-page .featured-works-table {
+            display: none;
+        }
+
+        .flex-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
     </style>
     <title>Edit Profile</title>
 </head>
@@ -82,7 +276,7 @@ if (isset($_SESSION['user_id'])) {
             </div>
 
             <!-- Featured Works -->
-            <div class="featured-works">
+            <!-- <div class="featured-works">
                 <h3>Featured Works</h3>
                 <?php
                 if ($resultProjects->num_rows > 0) {
@@ -99,7 +293,43 @@ if (isset($_SESSION['user_id'])) {
                 }
                 ?>
                 <button class="add-work-btn"><a href="./uploadProject.php">New Work</a></button>
+            </div> -->
+
+            <div class="featured-works">
+                <h2 align="left">Featured Works</h2>
+                <button class="add-work-btn" onclick="goToAddWorkPage()">Add Work</button>
             </div>
+            <!-- Featured Works Table -->
+            <table class="featured-works-table">
+                <!-- <caption>Featured Work</caption> -->
+                <thead>
+                    <tr>
+                        <th>Project</th>
+                        <th>Details</th>
+                        <th>Edit</th>
+                        <th>Delete</th>
+                    </tr>
+                </thead>
+                <tbody>
+                <?php
+                if (empty($projectsArray)) {
+                    echo '<tr><td colspan="4" style="font-size: 25px;">No project is uploaded yet.</td></tr>';
+                }
+                else{
+                    foreach ($projectsArray as $project) {
+                        echo '<tr>';
+                        echo '<td>' . htmlspecialchars($project['project_header']) . '</td>';
+                        echo '<td><button class="details-btn" onclick="showDetails(' . $project['project_id'] . ')">Details</button></td>';
+                        echo '<td><button class="edit-work-btn" onclick="toggleProjectEdit(' . $project['project_id'] . ')">Edit</button></td>';
+                        echo '<td><button class="delete-btn" onclick="deleteProject(' . $project['project_id'] . ')">Delete</button></td>';
+                        echo '</tr>';
+                    }
+                }
+                ?>
+            </tbody>
+
+            </table>
+
 
             <!-- Edit Form -->
             <form id="editForm" class="edit-form" style="display: none;" action="updateProfile.php" method="post" enctype="multipart/form-data">
@@ -206,9 +436,45 @@ if (isset($_SESSION['user_id'])) {
             }
         }
 
-        function deleteWork(button) {
-            const workItem = button.parentElement;
-            workItem.remove();
+        function deleteProject(projectId) {
+            // Ask for confirmation before deleting
+            if (confirm("Are you sure you want to delete this project?")) {
+                fetch('deleteProject.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'projectId=' + encodeURIComponent(projectId),
+                })
+                .then(response => response.text())
+                .then(data => {
+                    console.log(data);
+                    // Assuming the response indicates success, you can update the displayed projects
+                    window.location.href = 'profile2.php'; // Fetch updated profile data after project deletion
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                }); 
+            }
+        }
+
+        function showDetails(projectId) {
+            // Add logic to navigate to projectDetails.php with the project ID
+            window.location.href = 'projectDetails.php?projectId=' + projectId;
+        }
+
+        function toggleProjectEdit(projectId) {
+            window.location.href = 'projectEdit.php?projectId=' + projectId;
+        }
+
+        function deleteWork(workId) {
+            const workItem = document.getElementById(workId);
+            workItem.parentNode.removeChild(workItem);
+        }
+
+        function goToAddWorkPage() {
+            // Add logic to navigate to the page for adding a new work
+            window.location.href = 'uploadProject.php'
         }
     </script>
 

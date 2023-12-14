@@ -24,7 +24,7 @@
       <span class="tooltip">Add Project</span>
     </li>
     <li>
-      <a href="profile.php">
+      <a href="profile2.php">
         <i class="bx bx-user"></i>  
         <span class="link_name">Profile</span>
       </a>
