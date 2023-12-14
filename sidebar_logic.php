@@ -6,7 +6,8 @@
   </li>
   <li>
     <a href="index.php">
-      <i class="bx bx-home"></i> <span class="link_name">Home</span>
+      <i class="bx bx-home"></i> 
+      <span class="link_name">Home</span>
     </a>
     <span class="tooltip">Home</span>
   </li>
@@ -23,7 +24,7 @@
       <span class="tooltip">Add Project</span>
     </li>
     <li>
-      <a href="profile2.php">
+      <a href="profile.php">
         <i class="bx bx-user"></i>  
         <span class="link_name">Profile</span>
       </a>
