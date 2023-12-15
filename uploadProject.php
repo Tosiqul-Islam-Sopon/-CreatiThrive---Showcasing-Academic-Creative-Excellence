@@ -14,6 +14,9 @@
         die("Connection failed: " . $conn->connect_error);
     }
 
+    date_default_timezone_set('Asia/Dhaka');
+
+
     // Include the database connection logic and other necessary files
     
 
@@ -26,12 +29,18 @@
         $studentId = $_SESSION['user_id'];  // Assuming user_id is set in the session
 
         // Process the uploaded image
-        $targetDirectory = "uploads/";
-        $projectPhoto = $targetDirectory . basename($_FILES['projectPhoto']['name']);
-        move_uploaded_file($_FILES['projectPhoto']['tmp_name'], $projectPhoto);
+        // $targetDirectory = "uploads/";
+        // $projectPhoto = $targetDirectory . basename($_FILES['projectPhoto']['name']);
+        // move_uploaded_file($_FILES['projectPhoto']['tmp_name'], $projectPhoto);
 
-        // Get the contents of the uploaded image
-        $projectPhotoContents = file_get_contents($projectPhoto);
+        // // Get the contents of the uploaded image
+        // $projectPhotoContents = file_get_contents($projectPhoto);
+
+        $projectPhoto = $_FILES['projectPhoto']['tmp_name'];
+
+        if (!empty($projectPhoto) && $_FILES['projectPhoto']['error'] === UPLOAD_ERR_OK) {
+            $projectPhotoContents = file_get_contents($projectPhoto);
+        }
 
         // Get the current date and time
         $uploadDatetime = date("Y-m-d H:i:s");
