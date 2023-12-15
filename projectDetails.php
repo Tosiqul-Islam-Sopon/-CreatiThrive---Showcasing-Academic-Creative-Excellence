@@ -166,8 +166,4 @@ if(isset($_GET['projectId'])) {
 // Close the database connection
 $conn->close();
 include 'sideBar.php';
-<<<<<<< HEAD
 ?>
-=======
-?>
->>>>>>> 0b153737c2000ff9617855ef558a5821a37d1280
