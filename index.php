@@ -85,9 +85,9 @@
 </head>
 
 <body>
-    <div class="navbar">
+    <!-- <div class="navbar">
         <h3 class="text-white navbar-brand">CreatiThrive - Showcasing Academic & Creative Excellence</h3>
-    </div>
+    </div> -->
 
     <div class="container mt-4">
         <div class="row">    
@@ -95,6 +95,7 @@
                 <?php
                     // Include the content from the PHP file
                     include 'index_content.php';
+                    // include 'home.php';
                 ?>
             </div>
         </div>
