@@ -1,7 +1,9 @@
 <ul class="new-list">
   <li>
     <i class="bx bx-search"></i>
-    <input name="search" type="text" placeholder="Search by Project" />
+    <form action="search.php" method="GET">
+      <input name="query" type="text" placeholder="Search by Project" />
+    </form>
     <span class="tooltip">Search</span>
   </li>
   <li>
@@ -24,11 +26,11 @@
       <span class="tooltip">Add Project</span>
     </li>
     <li>
-      <a href="profile.php">
+      <a href="profile2.php">
         <i class="bx bx-user"></i>  
         <span class="link_name">Profile</span>
       </a>
-      <span class="tooltip">Profile</span></span>
+      <span class="tooltip">Profile</span>
     </li>
     <li>
       <a href="logout.php">
