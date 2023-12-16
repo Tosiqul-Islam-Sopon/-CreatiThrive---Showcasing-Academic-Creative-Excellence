@@ -42,15 +42,19 @@ if (isset($_GET['query'])) {
             flex-wrap: wrap;
             justify-content: space-around;
             gap: 20px;
+            margin-top: 20px; /* Add margin for spacing from the header */
+            margin-left: 50px;
         }
 
         .search-result-card {
+            flex: 0 0 calc(33.33% - 20px); /* Adjust the width based on your desired layout */
             max-width: 300px;
             border: 1px solid #ddd;
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s;
+            margin-bottom: 20px; /* Add margin for spacing between cards */
         }
 
         .search-result-card:hover {
