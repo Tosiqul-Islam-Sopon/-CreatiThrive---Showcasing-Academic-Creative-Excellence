@@ -30,7 +30,7 @@ if (isset($_GET['uploaderId'])) {
         $userProfileImage = !empty($rowProfile['profile_pic']) ? base64_encode($rowProfile['profile_pic']) : "default-avatar.jpg";
 
         // Check if any projects are uploaded for the user
-        $sqlProjects = "SELECT * FROM projects WHERE student_id = $userId";
+        $sqlProjects = "SELECT * FROM projects WHERE student_id = $userId AND status = 'approved'";
         $resultProjects = $conn->query($sqlProjects);
         $projectsArray = array();
         while ($rowProject = $resultProjects->fetch_assoc()) {
@@ -323,33 +323,6 @@ if (isset($_GET['uploaderId'])) {
 
             </table>
 
-
-            <!-- Edit Form -->
-            <form id="editForm" class="edit-form" style="display: none;" action="updateProfile.php" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="userNameInput">Name:</label>
-                    <input type="text" class="form-control" id="userNameInput" name="userNameInput" placeholder="Enter your name" value="<?php echo htmlspecialchars($userName); ?>">
-                </div>
-                <div class="form-group">
-                    <label for="userEmailInput">Email:</label>
-                    <input type="email" class="form-control" id="userEmailInput" name="userEmailInput" placeholder="Enter your email" value="<?php echo htmlspecialchars($userEmail); ?>">
-                </div>
-                <div class="form-group">
-                    <label for="userAddressInput">Address:</label>
-                    <input type="text" class="form-control" id="userAddressInput" name="userAddressInput" placeholder="Enter your address" value="<?php echo $userAddress !== 'Not provided yet' ? htmlspecialchars($userAddress) : ''; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="userSkillsInput">Skills:</label>
-                    <input type="text" class="form-control" id="userSkillsInput" name="userSkillsInput" placeholder="Enter your skills" value="<?php echo $userSkills !== 'Not provided yet' ? htmlspecialchars($userSkills) : ''; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="profileImageInput">Profile Image:</label>
-                    <input type="file" class="form-control" id="profileImageInput" name="profileImageInput" placeholder="Your Profile Picture" value="<?php echo $userProfileImage !== 'Not provided yet' ? htmlspecialchars($userProfileImage) : ''; ?>">
-                </div>
-                <button type="submit" class="save-btn" onclick="saveProfile()">Save Changes</button>
-                <button type="button" class="cancel-btn" onclick="cancelEdit()">Cancel</button>
-            </form>
-
         </div>
     </div>
 
@@ -357,118 +330,12 @@ if (isset($_GET['uploaderId'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Add your JavaScript functions here (if needed)
-        function toggleEdit() {
-            const profileInfo = document.getElementById('profileInfo');
-            const editForm = document.getElementById('editForm');
-            const body = document.body;
-
-            profileInfo.style.display = profileInfo.style.display === 'none' ? 'block' : 'none';
-            editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
-
-            // Add or remove the 'edit-profile-page' class based on the display status of the edit form
-            body.classList.toggle('edit-profile-page', editForm.style.display === 'block');
-        }
-
-        function saveProfile() {
-            // const userName = document.getElementById('userNameInput').value;
-            // const userEmail = document.getElementById('userEmailInput').value;
-            // const userAddress = document.getElementById('userAddressInput').value;
-            // const userSkills = document.getElementById('userSkillsInput').value;
-            // const profileImage = document.getElementById('profileImageInput').files[0];
-
-            // Handle image upload and other data processing here
-
-            // document.getElementById('userName').innerText = userName;
-            // document.getElementById('userEmail').innerText = userEmail;
-            // document.getElementById('userAddress').innerText = userAddress;
-            // document.getElementById('userSkills').innerText = userSkills;
-            
-            const form = document.getElementById('editForm');
-            const formData = new FormData(form);
-            console.log([...formData]);
-
-            // Handle other data processing here if needed
-
-            fetch('updateProfile.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                console.log(data); // You can log the response for debugging
-                toggleEdit(); // Assuming you want to hide the form after submission
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-
-            // toggleEdit();
-            // echo "UserName: userName<br>";
-            // echo "UserEmail: userEmail<br>";
-            // echo "UserAddress: userAddress<br>";
-            // echo "UserSkills: userSkills<br>";
-
-        }
-
-        function cancelEdit() {
-            toggleEdit();
-        }
-
-        function editWork(button) {
-            const workItem = button.parentElement;
-            const projectName = workItem.querySelector('h4').innerText;
-            const projectDescription = workItem.querySelector('p').innerText;
-
-            const newProjectName = prompt('Edit Project Name:', projectName);
-            const newProjectDescription = prompt('Edit Project Description:', projectDescription);
-
-            if (newProjectName !== null && newProjectDescription !== null) {
-                workItem.querySelector('h4').innerText = newProjectName;
-                workItem.querySelector('p').innerText = newProjectDescription;
-            }
-        }
-
-        function deleteProject(projectId) {
-            // Ask for confirmation before deleting
-            if (confirm("Are you sure you want to delete this project?")) {
-                fetch('deleteProject.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'projectId=' + encodeURIComponent(projectId),
-                })
-                .then(response => response.text())
-                .then(data => {
-                    console.log(data);
-                    // Assuming the response indicates success, you can update the displayed projects
-                    window.location.href = 'profile2.php'; // Fetch updated profile data after project deletion
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                }); 
-            }
-        }
 
         function showDetails(projectId) {
             // Add logic to navigate to projectDetails.php with the project ID
             window.location.href = 'projectDetails.php?projectId=' + projectId;
         }
 
-        function toggleProjectEdit(projectId) {
-            window.location.href = 'projectEdit.php?projectId=' + projectId;
-        }
-
-        function deleteWork(workId) {
-            const workItem = document.getElementById(workId);
-            workItem.parentNode.removeChild(workItem);
-        }
-
-        function goToAddWorkPage() {
-            // Add logic to navigate to the page for adding a new work
-            window.location.href = 'uploadProject.php'
-        }
     </script>
 
 </body>

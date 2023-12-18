@@ -17,13 +17,13 @@ if ($conn->connect_error) {
 // Set the number of projects to display per page
 $projectsPerPage = 9;
 
-// Fetch the total number of approved projects
-$totalApprovedProjectsSql = "SELECT COUNT(*) as total FROM projects WHERE status = 'approved'";
-$totalApprovedProjectsResult = $conn->query($totalApprovedProjectsSql);
-$totalApprovedProjects = $totalApprovedProjectsResult->fetch_assoc()['total'];
+// Fetch the total number of projects
+$totalPendingProjectsSql = "SELECT COUNT(*) as total FROM projects WHERE status = 'pending'";
+$totalPendingProjectsResult = $conn->query($totalPendingProjectsSql);
+$totalPendingProjects = $totalPendingProjectsResult->fetch_assoc()['total'];
 
 // Calculate the total number of pages
-$totalPages = ceil($totalApprovedProjects / $projectsPerPage);
+$totalPages = ceil($totalPendingProjects / $projectsPerPage);
 
 // Get the current page number
 $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
@@ -32,7 +32,7 @@ $page = isset($_GET['page']) ? intval($_GET['page']) : 1;
 $offset = ($page - 1) * $projectsPerPage;
 
 // Fetch the projects for the current page
-$sql = "SELECT * FROM projects WHERE status = 'approved' ORDER BY upload_datetime DESC LIMIT $offset, $projectsPerPage";
+$sql = "SELECT * FROM projects WHERE status = 'pending' ORDER BY upload_datetime DESC LIMIT $offset, $projectsPerPage";
 $result = $conn->query($sql);
 
 // Include the HTML structure
@@ -114,6 +114,26 @@ $result = $conn->query($sql);
             color: #bbb;
             /* cursor: pointer; */
         }
+        .pagination {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
+        }
+
+        .pagination a {
+            color: #4CAF50;
+            background-color: #fff;
+            border: 1px solid #4CAF50;
+            padding: 8px 16px;
+            text-decoration: none;
+            margin: 0 5px;
+            border-radius: 5px;
+        }
+
+        .pagination a:hover {
+            background-color: #4CAF50;
+            color: #fff;
+        }
     </style>
 </head>
 <body>
@@ -175,7 +195,7 @@ $result = $conn->query($sql);
     <script>
         function showDetails(projectId) {
             // Add logic to navigate to projectDetails.php with the project ID
-            window.location.href = 'projectDetails.php?projectId=' + projectId;
+            window.location.href = 'project_details_admin.php?projectId=' + projectId;
         }
     </script>
 

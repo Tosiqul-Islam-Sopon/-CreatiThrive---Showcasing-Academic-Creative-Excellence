@@ -46,8 +46,8 @@
         $uploadDatetime = date("Y-m-d H:i:s");
 
         // Use prepared statements to prevent SQL injection
-        $stmt = $conn->prepare("INSERT INTO projects (project_header, project_description, project_url, project_photo, student_id, upload_datetime) 
-                                VALUES (?, ?, ?, ?, ?, ?)");
+        $stmt = $conn->prepare("INSERT INTO projects (project_header, project_description, project_url, project_photo, student_id, upload_datetime, status) 
+                                VALUES (?, ?, ?, ?, ?, ?, ?)");
 
         if (!$stmt) {
             // Reconnect if the statement preparation fails
@@ -58,11 +58,14 @@
             }
 
             // Retry the statement preparation
-            $stmt = $conn->prepare("INSERT INTO projects (project_header, project_description, project_url, project_photo, student_id, upload_datetime) 
-                                    VALUES (?, ?, ?, ?, ?, ?)");
+            $stmt = $conn->prepare("INSERT INTO projects (project_header, project_description, project_url, project_photo, student_id, upload_datetime, status) 
+                                    VALUES (?, ?, ?, ?, ?, ?, ?)");
         }
 
-        $stmt->bind_param("ssssss", $projectHeader, $projectDescription, $projectUrl, $projectPhotoContents, $studentId, $uploadDatetime);
+        // Default status for a new project is 'pending'
+        $defaultStatus = 'pending';
+
+        $stmt->bind_param("sssssss", $projectHeader, $projectDescription, $projectUrl, $projectPhotoContents, $studentId, $uploadDatetime, $defaultStatus);
 
         if ($stmt->execute()) {
             echo "Project uploaded successfully!";

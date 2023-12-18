@@ -17,6 +17,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $student_id = $_POST['student_id'];
     $password = password_hash($_POST['password'], PASSWORD_DEFAULT); // Hash the password
 
+    // Check if the email belongs to an academic domain
+    if (!isValidAcademicEmail($email)) {
+        die("Invalid email. Only academic emails are allowed.");
+    }
+
     // Optional profile fields
     $address = isset($_POST['address']) ? $_POST['address'] : "";
     $skills = isset($_POST['skills']) ? $_POST['skills'] : "";
@@ -53,4 +58,16 @@ $conn->close();
 // Include HTML files after PHP processing
 include('sideBar.php');
 include('register.html');
+
+function isValidAcademicEmail($email)
+{
+    $allowedDomain = "just.edu.bd";
+    $parts = explode("@", $email);
+    if (count($parts) === 2) {
+        $domain = $parts[1];
+        $idPart = explode(".", $parts[0]);
+        return $domain === $allowedDomain && count($idPart) === 2 && is_numeric($idPart[0]);
+    }
+    return false;
+}
 ?>

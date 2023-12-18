@@ -115,7 +115,7 @@ if (isset($_SESSION['user_id'])) {
             border-radius: 50%;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         }
-
+        
         .edit-btn {
             background-color: #3498db;
             color: #fff;
@@ -250,6 +250,12 @@ if (isset($_SESSION['user_id'])) {
             justify-content: space-between;
             align-items: center;
         }
+        .disabled {
+            background-color: #ccc; /* Change the background color for disabled buttons */
+            color: #666; /* Change the text color for disabled buttons */
+            cursor: not-allowed; /* Change the cursor to indicate that the button is not clickable */
+        }
+        
     </style>
     <title>Edit Profile</title>
 </head>
@@ -305,7 +311,7 @@ if (isset($_SESSION['user_id'])) {
                 <thead>
                     <tr>
                         <th>Project</th>
-                        <th>Details</th>
+                        <th>Status</th>
                         <th>Edit</th>
                         <th>Delete</th>
                     </tr>
@@ -318,10 +324,19 @@ if (isset($_SESSION['user_id'])) {
                 else{
                     foreach ($projectsArray as $project) {
                         echo '<tr>';
-                        echo '<td>' . htmlspecialchars($project['project_header']) . '</td>';
-                        echo '<td><button class="details-btn" onclick="showDetails(' . $project['project_id'] . ')">Details</button></td>';
-                        echo '<td><button class="edit-work-btn" onclick="toggleProjectEdit(' . $project['project_id'] . ')">Edit</button></td>';
-                        echo '<td><button class="delete-btn" onclick="deleteProject(' . $project['project_id'] . ')">Delete</button></td>';
+                        echo '<td><a href="projectDetails.php?projectId=' . $project['project_id'] . '">' . htmlspecialchars($project['project_header']) . '</a></td>';
+                        echo '<td>' . htmlspecialchars($project['status']) . '</td>';
+                        // Check if the status is 'pending'
+                        if ($project['status'] === 'pending') {
+                            // If the status is 'pending', disable the 'Edit' and 'Delete' buttons
+                            echo '<td><button class="edit-work-btn disabled" disabled>Edit</button></td>';
+                            echo '<td><button class="delete-btn disabled" disabled>Delete</button></td>';
+                        } else {
+                            // If the status is not 'pending', enable the 'Edit' and 'Delete' buttons
+                            echo '<td><button class="edit-work-btn" onclick="toggleProjectEdit(' . $project['project_id'] . ')">Edit</button></td>';
+                            echo '<td><button class="delete-btn" onclick="deleteProject(' . $project['project_id'] . ')">Delete</button></td>';
+                        }  
+
                         echo '</tr>';
                     }
                 }
