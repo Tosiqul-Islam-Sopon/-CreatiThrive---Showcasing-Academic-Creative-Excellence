@@ -31,19 +31,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo "Error updating project: " . $conn->error;
     }
+    $stmt1->close();
 
     // Handle file upload (project image)
     if ($_FILES["editProjectImage"]["size"] > 0) {
-        $projectImage = addslashes(file_get_contents($_FILES["editProjectImage"]["tmp_name"]));
+        $projectImage = file_get_contents($_FILES["editProjectImage"]["tmp_name"]);
         $sql2 = "UPDATE projects SET project_photo=? WHERE project_id=?";
         $stmt2 = $conn->prepare($sql2);
         $stmt2->bind_param("ss", $projectImage, $projectId);
 
-        if ($stmt1->execute()) {
+        if ($stmt2->execute()) {
             echo "Project updated successfully";
         } else {
             echo "Error updating project: " . $conn->error;
         }
+        $stmt2->close();
     }
     // Echo values for testing
     // echo "Project ID: " . $projectId . "<br>";
