@@ -17,7 +17,7 @@ if (isset($_GET['query'])) {
     $searchQuery = $_GET['query'];
 
     // Fetch projects based on the search query
-    $sqlSearch = "SELECT * FROM projects WHERE project_header LIKE '%$searchQuery%'";
+    $sqlSearch = "SELECT * FROM projects WHERE project_header LIKE '%$searchQuery%' AND status = 'approved'";
     $resultSearch = $conn->query($sqlSearch);
 ?>
 

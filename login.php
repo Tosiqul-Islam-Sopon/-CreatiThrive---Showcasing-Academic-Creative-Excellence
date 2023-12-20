@@ -34,17 +34,43 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header("Location: index.php");
             exit();
         } else {
-            echo "Incorrect password";
+            echo '<script>var passwordError = "Incorrect password";</script>';
         }
     } else {
-        echo "User not found";
+        echo '<script>var userNotFoundError = "User not found";</script>';
     }
 }
 
 // Close the database connection
 $conn->close();
-
-// Include HTML files after PHP processing
-include('sideBar.php');
-include('login.html');
 ?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+    <!-- Include HTML files after PHP processing -->
+    <?php
+    // Include HTML files after PHP processing
+    include('sideBar.php');
+    include('login.html');
+    ?>
+
+    <!-- JavaScript to display error messages -->
+    <script>
+        // Check if the JavaScript variables are set and display messages accordingly
+        document.addEventListener('DOMContentLoaded', function () {
+            if (typeof passwordError !== 'undefined') {
+                document.getElementById('passwordError').innerText = passwordError;
+            }
+            if (typeof userNotFoundError !== 'undefined') {
+                document.getElementById('userNotFoundError').innerText = userNotFoundError;
+            }
+        });
+    </script>
+</body>
+</html>

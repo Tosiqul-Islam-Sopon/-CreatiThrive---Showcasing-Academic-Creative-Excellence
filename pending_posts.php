@@ -45,6 +45,8 @@ $result = $conn->query($sql);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/css/bootstrap.min.css">
+    <title>Pending Posts</title>
+    
     <style>
         body {
             background: #f5f5f5; /* Good white background */
@@ -138,8 +140,8 @@ $result = $conn->query($sql);
 </head>
 <body>
     <div class="container">
-        <h1>Welcome to <span style="color: #007bff;">CreatiThrive</span></h1>
-        <p>Showcasing Academic & Creative Excellence</p>
+        <h1><span style="color: #007bff;">Pending Posts</span></h1>
+        <!-- <p>Showcasing Academic & Creative Excellence</p> -->
         <!-- Your content goes here -->
         <div class="project-container">
             <?php
@@ -157,20 +159,8 @@ $result = $conn->query($sql);
                 $uploaderNameRow = $uploaderNameResult->fetch_assoc();
                 $uploaderName = $uploaderNameRow['name'];
 
-                if (isset($_SESSION['user_id'])) {
-                    $visitorId = $_SESSION['user_id'];
-                    // Check if the visitor is the uploader
-                    if ($visitorId === $uploaderId) {
-                        echo '<p class="project-uploader profile-link" data-userid="' . $uploaderId . '">Uploaded by: <a href="profile2.php">' . $uploaderName . '</a></p>';
-                    } else {
-                        // echo '<p class="project-header" onclick="showDetails(' . $row['project_id'] . ')">' . $row['project_header'] . '</p>';
-
-                        echo '<p class="project-uploader profile-link" data-userid="' . $uploaderId . '">Uploaded by: <a href="profileVisitor.php?uploaderId=' . $uploaderId . '">' . $uploaderName . '</a></p>';
-                    }
-                } else {
-                    // Visitor is not logged in
-                    echo '<p class="project-uploader profile-link" data-userid="' . $uploaderId . '">Uploaded by: <a href="profileVisitor.php?uploaderId=' . $uploaderId . '">' . $uploaderName . '</a></p>';
-                }
+                echo '<p class="project-uploader profile-link" data-userid="' . $uploaderId . '">Uploaded by: <a href="profile_for_admin.php?uploaderId=' . $uploaderId . '">' . $uploaderName . '</a></p>';
+                
                 echo '</div></div>';
             }
             ?>

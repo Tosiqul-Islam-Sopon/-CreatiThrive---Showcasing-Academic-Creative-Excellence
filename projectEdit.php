@@ -1,8 +1,8 @@
 <?php
 session_start();
-echo '<pre>';
-print_r($_POST);
-echo '</pre>';
+// echo '<pre>';
+// print_r($_POST);
+// echo '</pre>';
 
 $servername = "localhost";
 $username = "root";
@@ -48,10 +48,10 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $stmt2->close();
     }
     // Echo values for testing
-    echo "Project ID: " . $projectId . "<br>";
-    echo "Project Header: " . $projectHeader . "<br>";
-    echo "Project Description: " . $projectDescription . "<br>";
-    echo "Project URL: " . $projectUrl . "<br>";
+    // echo "Project ID: " . $projectId . "<br>";
+    // echo "Project Header: " . $projectHeader . "<br>";
+    // echo "Project Description: " . $projectDescription . "<br>";
+    // echo "Project URL: " . $projectUrl . "<br>";
 
 
     // Redirect back to the original page
@@ -176,7 +176,7 @@ if (isset($_GET['projectId'])) {
             margin-left: 10px;
         }
     </style>
-    <title>Project Edit Page</title>
+    <title>Edit Project</title>
 </head>
 
 <body>
@@ -184,26 +184,28 @@ if (isset($_GET['projectId'])) {
         <h3 class="text-white">CreatiThrive - Showcasing Academic & Creative Excellence</h3>
     </div>
     <!-- Project Edit Form -->
-    <div class="content-container">
-        <form class="edit-form" method="post" enctype="multipart/form-data">
-            <input type="hidden" name="projectId" value="<?php echo $projectId; ?>">
+    <div class="container">
+        <div class="content-container">
+            <form class="edit-form" method="post" enctype="multipart/form-data">
+                <input type="hidden" name="projectId" value="<?php echo $projectId; ?>">
 
-            <label for="editProjectHeader">Edit Project Header:</label>
-            <input type="text" id="editProjectHeader" name="editProjectHeader" value="<?php echo $projectDetails['projectHeader']; ?>">
+                <label for="editProjectHeader">Edit Project Header:</label>
+                <input type="text" id="editProjectHeader" name="editProjectHeader" value="<?php echo $projectDetails['projectHeader']; ?>">
 
-            <label for="editProjectDescription">Edit Project Description:</label>
-            <textarea id="editProjectDescription" name="editProjectDescription"><?php echo $projectDetails['projectDescription']; ?></textarea>
-            
-            <label for="editProjectUrl">Edit Project URL:</label>
-            <input type="text" id="editProjectUrl" name="editProjectUrl" value="<?php echo $projectDetails['projectUrl']; ?>">
+                <label for="editProjectDescription">Edit Project Description:</label>
+                <textarea id="editProjectDescription" name="editProjectDescription"><?php echo $projectDetails['projectDescription']; ?></textarea>
+                
+                <label for="editProjectUrl">Edit Project URL:</label>
+                <input type="text" id="editProjectUrl" name="editProjectUrl" value="<?php echo $projectDetails['projectUrl']; ?>">
 
-        <!-- Image Upload -->
-            <label for="editProjectImage">Edit Project Image:</label>
-            <input type="file" id="editProjectImage" name="editProjectImage" accept="image/*">
-            <img id="projectImagePreview" src="data:image/jpeg;base64,<?php echo base64_encode($projectDetails['projectImage']); ?>" alt="Project Image Preview">
-            <button type="submit" class="save-btn">Save Changes</button>
-            <button type="button" onclick="cancelProjectEdit()" class="cancel-btn">Cancel</button>
-        </form>
+            <!-- Image Upload -->
+                <label for="editProjectImage">Edit Project Image:</label>
+                <input type="file" id="editProjectImage" name="editProjectImage" accept="image/*">
+                <img id="projectImagePreview" src="data:image/jpeg;base64,<?php echo base64_encode($projectDetails['projectImage']); ?>" alt="Project Image Preview">
+                <button type="submit" class="save-btn">Save Changes</button>
+                <button type="button" onclick="cancelProjectEdit()" class="cancel-btn">Cancel</button>
+            </form>
+        </div>
     </div>
 
     <!-- Bootstrap JS and Popper.js (required for Bootstrap components) -->

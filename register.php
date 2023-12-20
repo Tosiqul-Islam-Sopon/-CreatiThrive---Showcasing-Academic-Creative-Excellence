@@ -27,12 +27,12 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $skills = isset($_POST['skills']) ? $_POST['skills'] : "";
 
     // Default profile image
-    $profileImage = null; // Initialize to null
+    $profileImage = "profile_pic.jpg"; // Initialize to null
 
     // Check if a file was uploaded
-    if ($_FILES['profile_pic']['error'] === UPLOAD_ERR_OK) {
-        $profileImage = file_get_contents($_FILES['profile_pic']['tmp_name']);
-    }
+    // if ($_FILES['profile_pic']['error'] === UPLOAD_ERR_OK) {
+    //     $profileImage = file_get_contents($_FILES['profile_pic']['tmp_name']);
+    // }
 
     // Now, insert the user data into the database
     $sql = "INSERT INTO `user`(`name`, `email`, `password`, `student_id`, `address`, `skills`, `profile_pic`)
@@ -54,6 +54,21 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 // Close the database connection
 $conn->close();
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+    
+</body>
+</html>
+
+<?php
 
 // Include HTML files after PHP processing
 include('sideBar.php');
@@ -61,12 +76,12 @@ include('register.html');
 
 function isValidAcademicEmail($email)
 {
-    $allowedDomain = "just.edu.bd";
+    $allowedDomain = "student.just.edu.bd";
     $parts = explode("@", $email);
     if (count($parts) === 2) {
         $domain = $parts[1];
         $idPart = explode(".", $parts[0]);
-        return $domain === $allowedDomain && count($idPart) === 2 && is_numeric($idPart[0]);
+        return $domain === $allowedDomain && count($idPart) === 2 && $idPart[1] === "cse";
     }
     return false;
 }

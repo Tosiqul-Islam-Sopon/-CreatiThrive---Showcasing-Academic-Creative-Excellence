@@ -12,11 +12,11 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Assume you have a session variable set during login
-if (isset($_SESSION['user_id'])) {
-    $userId = $_SESSION['user_id'];
+// Check if student_id is provided in the URL
+if (isset($_GET['uploaderId'])) {
+    $userId = $_GET['uploaderId'];
 
-    // Retrieve updated user profile data from the database
+    // Retrieve user profile data from the database
     $sqlProfile = "SELECT * FROM user WHERE student_id = $userId";
     $resultProfile = $conn->query($sqlProfile);
 
@@ -28,22 +28,22 @@ if (isset($_SESSION['user_id'])) {
         $userAddress = !empty($rowProfile['address']) ? $rowProfile['address'] : "Not provided yet";
         $userSkills = !empty($rowProfile['skills']) ? $rowProfile['skills'] : "Not provided yet";
         $userProfileImage = !empty($rowProfile['profile_pic']) ? base64_encode($rowProfile['profile_pic']) : "default-avatar.jpg";
+
+        // Check if any projects are uploaded for the user
+        $sqlProjects = "SELECT * FROM projects WHERE student_id = $userId";
+        $resultProjects = $conn->query($sqlProjects);
+        $projectsArray = array();
+        while ($rowProject = $resultProjects->fetch_assoc()) {
+            $projectsArray[] = $rowProject;
+        }
     } else {
         // Handle the case where the user ID is not found in the database
         die("User not found");
     }
-
-    // Check if any projects are uploaded for the user
-    $sqlProjects = "SELECT * FROM projects WHERE student_id = $userId";
-    $resultProjects = $conn->query($sqlProjects);
-    $projectsArray = array();
-    while ($rowProject = $resultProjects->fetch_assoc()) {
-        $projectsArray[] = $rowProject;
-    }
-
 } else {
-    // Redirect or handle the case where the user is not logged in
-    header("Location: login.php");
+    // Redirect or handle the case where the student_id is not provided
+    // header("Location: index.php");
+    die("Project ID not provided");
     exit();
 }
 ?>
@@ -86,6 +86,15 @@ if (isset($_SESSION['user_id'])) {
             top: 0;
         }
 
+        .context {
+            padding: 100px;
+            max-width: 800px;
+            width: 100%;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
         .profile-container {
             background-color: #fff;
             border-radius: 15px;
@@ -106,7 +115,7 @@ if (isset($_SESSION['user_id'])) {
             border-radius: 50%;
             box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
         }
-        
+
         .edit-btn {
             background-color: #3498db;
             color: #fff;
@@ -164,13 +173,12 @@ if (isset($_SESSION['user_id'])) {
 
         .featured-works {
             display: flex;
-            justify-content: space-between;
-            margin-top: 30px;
-            width: 80%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin: 10px auto; //Adjust the top and bottom margin as needed
             max-width: 800px;
-            margin-left: auto;
-            margin-right: auto;
-            position: relative;
+            width: 100%;
         }
 
         .featured-works h3 {
@@ -241,12 +249,6 @@ if (isset($_SESSION['user_id'])) {
             justify-content: space-between;
             align-items: center;
         }
-        .disabled {
-            background-color: #ccc; /* Change the background color for disabled buttons */
-            color: #666; /* Change the text color for disabled buttons */
-            cursor: not-allowed; /* Change the cursor to indicate that the button is not clickable */
-        }
-        
     </style>
     <title>Profile</title>
 </head>
@@ -257,8 +259,6 @@ if (isset($_SESSION['user_id'])) {
     </div>
     <div class="container">
         <div class="profile-container">
-            <!-- Edit Button -->
-            <button class="edit-btn" onclick="toggleEdit()">Edit Profile</button>
 
             <!-- Profile Image -->
             <img src="data:image/jpeg;base64,<?php echo $userProfileImage; ?>" alt="Profile Image" class="img-fluid profile-image">
@@ -293,8 +293,7 @@ if (isset($_SESSION['user_id'])) {
             </div> -->
 
             <div class="featured-works">
-                <h2 align="left">Featured Works</h2>
-                <button class="add-work-btn" onclick="goToAddWorkPage()">Add Work</button>
+                <h2 align="centre">Featured Works</h2>
             </div>
             <!-- Featured Works Table -->
             <table class="featured-works-table">
@@ -303,8 +302,6 @@ if (isset($_SESSION['user_id'])) {
                     <tr>
                         <th>Project</th>
                         <th>Status</th>
-                        <th>Edit</th>
-                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -315,19 +312,9 @@ if (isset($_SESSION['user_id'])) {
                 else{
                     foreach ($projectsArray as $project) {
                         echo '<tr>';
-                        echo '<td><a href="projectDetails.php?projectId=' . $project['project_id'] . '">' . htmlspecialchars($project['project_header']) . '</a></td>';
+                        echo '<td><a href="project_details_admin.php?projectId=' . $project['project_id'] . '">' . htmlspecialchars($project['project_header']) . '</a></td>';
                         echo '<td>' . htmlspecialchars($project['status']) . '</td>';
-                        // Check if the status is 'pending'
-                        if ($project['status'] === 'pending') {
-                            // If the status is 'pending', disable the 'Edit' and 'Delete' buttons
-                            echo '<td><button class="edit-work-btn disabled" disabled>Edit</button></td>';
-                            echo '<td><button class="delete-btn disabled" disabled>Delete</button></td>';
-                        } else {
-                            // If the status is not 'pending', enable the 'Edit' and 'Delete' buttons
-                            echo '<td><button class="edit-work-btn" onclick="toggleProjectEdit(' . $project['project_id'] . ')">Edit</button></td>';
-                            echo '<td><button class="delete-btn" onclick="deleteProject(' . $project['project_id'] . ')">Delete</button></td>';
-                        }  
-
+                        
                         echo '</tr>';
                     }
                 }
@@ -336,33 +323,6 @@ if (isset($_SESSION['user_id'])) {
 
             </table>
 
-
-            <!-- Edit Form -->
-            <form id="editForm" class="edit-form" style="display: none;" action="updateProfile.php" method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="userNameInput">Name:</label>
-                    <input type="text" class="form-control" id="userNameInput" name="userNameInput" placeholder="Enter your name" value="<?php echo htmlspecialchars($userName); ?>">
-                </div>
-                <div class="form-group">
-                    <label for="userEmailInput">Email:</label>
-                    <input type="email" class="form-control" id="userEmailInput" name="userEmailInput" placeholder="Enter your email" value="<?php echo htmlspecialchars($userEmail); ?>">
-                </div>
-                <div class="form-group">
-                    <label for="userAddressInput">Address:</label>
-                    <input type="text" class="form-control" id="userAddressInput" name="userAddressInput" placeholder="Enter your address" value="<?php echo $userAddress !== 'Not provided yet' ? htmlspecialchars($userAddress) : ''; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="userSkillsInput">Skills:</label>
-                    <input type="text" class="form-control" id="userSkillsInput" name="userSkillsInput" placeholder="Enter your skills" value="<?php echo $userSkills !== 'Not provided yet' ? htmlspecialchars($userSkills) : ''; ?>">
-                </div>
-                <div class="form-group">
-                    <label for="profileImageInput">Profile Image:</label>
-                    <input type="file" class="form-control" id="profileImageInput" name="profileImageInput" placeholder="Your Profile Picture" value="<?php echo $userProfileImage !== 'Not provided yet' ? htmlspecialchars($userProfileImage) : ''; ?>">
-                </div>
-                <button type="submit" class="save-btn" onclick="saveProfile()">Save Changes</button>
-                <button type="button" class="cancel-btn" onclick="cancelEdit()">Cancel</button>
-            </form>
-
         </div>
     </div>
 
@@ -370,101 +330,12 @@ if (isset($_SESSION['user_id'])) {
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
 
     <script>
-        // Add your JavaScript functions here (if needed)
-        function toggleEdit() {
-            const profileInfo = document.getElementById('profileInfo');
-            const editForm = document.getElementById('editForm');
-            const body = document.body;
-
-            profileInfo.style.display = profileInfo.style.display === 'none' ? 'block' : 'none';
-            editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
-
-            // Add or remove the 'edit-profile-page' class based on the display status of the edit form
-            body.classList.toggle('edit-profile-page', editForm.style.display === 'block');
-        }
-
-        function saveProfile() {
-           
-            const form = document.getElementById('editForm');
-            const formData = new FormData(form);
-            console.log([...formData]);
-
-            // Handle other data processing here if needed
-
-            fetch('updateProfile.php', {
-                method: 'POST',
-                body: formData
-            })
-            .then(response => response.text())
-            .then(data => {
-                console.log(data); // You can log the response for debugging
-                toggleEdit(); // Assuming you want to hide the form after submission
-            })
-            .catch(error => {
-                console.error('Error:', error);
-            });
-
-
-        }
-
-        function cancelEdit() {
-            toggleEdit();
-        }
-
-        function editWork(button) {
-            const workItem = button.parentElement;
-            const projectName = workItem.querySelector('h4').innerText;
-            const projectDescription = workItem.querySelector('p').innerText;
-
-            const newProjectName = prompt('Edit Project Name:', projectName);
-            const newProjectDescription = prompt('Edit Project Description:', projectDescription);
-
-            if (newProjectName !== null && newProjectDescription !== null) {
-                workItem.querySelector('h4').innerText = newProjectName;
-                workItem.querySelector('p').innerText = newProjectDescription;
-            }
-        }
-
-        function deleteProject(projectId) {
-            // Ask for confirmation before deleting
-            if (confirm("Are you sure you want to delete this project?")) {
-                fetch('deleteProject.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/x-www-form-urlencoded',
-                    },
-                    body: 'projectId=' + encodeURIComponent(projectId),
-                })
-                .then(response => response.text())
-                .then(data => {
-                    console.log(data);
-                    // Assuming the response indicates success, you can update the displayed projects
-                    window.location.href = 'profile2.php'; // Fetch updated profile data after project deletion
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                }); 
-            }
-        }
 
         function showDetails(projectId) {
             // Add logic to navigate to projectDetails.php with the project ID
             window.location.href = 'projectDetails.php?projectId=' + projectId;
         }
 
-        function toggleProjectEdit(projectId) {
-            window.location.href = 'projectEdit.php?projectId=' + projectId;
-        }
-
-        function deleteWork(workId) {
-            const workItem = document.getElementById(workId);
-            workItem.parentNode.removeChild(workItem);
-        }
-
-        function goToAddWorkPage() {
-            // Add logic to navigate to the page for adding a new work
-            window.location.href = 'uploadProject.php'
-        }
     </script>
 
 </body>
