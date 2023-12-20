@@ -31,7 +31,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     } else {
         echo "Error updating project: " . $conn->error;
     }
-    $stmt1->close();
 
     // Handle file upload (project image)
     if ($_FILES["editProjectImage"]["size"] > 0) {
@@ -45,7 +44,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         } else {
             echo "Error updating project: " . $conn->error;
         }
-        $stmt2->close();
     }
     // Echo values for testing
     // echo "Project ID: " . $projectId . "<br>";
